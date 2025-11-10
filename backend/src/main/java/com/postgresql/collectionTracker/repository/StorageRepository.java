@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface StorageRepository extends JpaRepository<MediaData, Long> {
     Optional<MediaData> findByName(String fileName);
+    Optional<MediaData> findByListingId(Long listingId);
 }

@@ -3,6 +3,7 @@ import profileIcon from './icons/profileIcon.webp';
 import searchIcon from './icons/searchIcon.svg';
 import './home.css';
 import PreviewBox from './components/previewBox';
+import ListingCard from './components/ListingCard';
 
 function Home() {
     const [credentials, setCredentials] = useState({
@@ -151,19 +152,30 @@ function Home() {
                     </div>
                 </aside>
                 <section id="listings">
-                    <h2>Listings</h2>
-                    {listings.map(listing => (
-                        <div key={listing.id} className="listing-entry" onClick={() => handleListingClick(listing)}>
-                            <button>{listing.title}</button>
-                        </div>
-                    ))}
+                    <div className="listings-header">
+                        <h2>Today's picks</h2>
+                    </div>
+                    <div className="listing-grid">
+                        {listings.map(listing => (
+                            <ListingCard
+                                key={listing.id}
+                                listing={listing}
+                                onClick={handleListingClick}
+                            />
+                        ))}
+                        {listings.length === 0 && (
+                            <div className="listing-empty-state">
+                                No listings yet. Check back soon!
+                            </div>
+                        )}
+                    </div>
                 </section>
             </main>
             {showPreviewModal && (
                 <div className="modal-overlay">
                     <div className="modal">
                         <span className="close-modal" onClick={handleCloseModal}>×</span>
-                        <PreviewBox listing={selectedListing} onRemoveMedia={() => setSelectedListing({...selectedListing, media: null})} />
+                        <PreviewBox listing={selectedListing} />
                     </div>
                 </div>
             )}

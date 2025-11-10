@@ -280,28 +280,23 @@ body, h1, h2 {
 .listings-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 16px;
 }
 
-.listing-entry {
-  width: 100%; 
-  margin-bottom: 10px;
-  margin-top: 10px;
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
-.listing-entry button {
+.listing-empty-state {
+  grid-column: 1 / -1;
+  padding: 48px 24px;
+  text-align: center;
   background-color: #fff;
-  color: #000;
-  text-align: left;
-  width: 100%; 
-  padding: 10px;
-  border: none;
-  border-radius: 5px; 
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
-  cursor: pointer; 
-}
-
-.listing-entry button:hover {
-  background-color: #f8f8f8; 
+  border-radius: 12px;
+  color: #65676b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 

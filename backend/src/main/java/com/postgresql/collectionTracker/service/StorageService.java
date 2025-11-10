@@ -10,6 +10,7 @@ import com.postgresql.collectionTracker.util.MediaUtils;
 
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,14 +21,16 @@ public class StorageService {
 
     @Transactional
     public String uploadMedia(Long id, MultipartFile file) throws IOException {
-        repository.save(MediaData.builder()
-                .id(id)
-                .name(file.getOriginalFilename())
-                .type(file.getContentType())
-                .mediaData(MediaUtils.compressMedia(file.getBytes())).build());
-        {
-            return "file uploaded successfully : " + file.getOriginalFilename();
-        }
+        MediaData media = repository.findByListingId(id)
+                .orElseGet(MediaData::new);
+
+        media.setListingId(id);
+        media.setName(file.getOriginalFilename());
+        media.setType(file.getContentType());
+        media.setMediaData(MediaUtils.compressMedia(file.getBytes()));
+
+        repository.save(media);
+        return "file uploaded successfully : " + file.getOriginalFilename();
     }
 
     @Transactional
@@ -35,5 +38,20 @@ public class StorageService {
         Optional<MediaData> dbMediaData = repository.findByName(fileName);
         byte[] medias=MediaUtils.decompressMedia(dbMediaData.get().getMediaData());
         return medias;
+    }
+
+    @Transactional
+    public Optional<MediaData> downloadMediaByListingId(Long listingId){
+        Long safeListingId = Objects.requireNonNull(listingId, "listingId must not be null");
+        return repository.findByListingId(safeListingId)
+                .map(media -> {
+                    MediaData decompressed = new MediaData();
+                    decompressed.setId(media.getId());
+                    decompressed.setName(media.getName());
+                    decompressed.setListingId(media.getListingId());
+                    decompressed.setType(media.getType());
+                    decompressed.setMediaData(MediaUtils.decompressMedia(media.getMediaData()));
+                    return decompressed;
+                });
     }
 }

@@ -3,8 +3,9 @@ import './user.css';
 import profileIcon from '../icons/profileIcon.webp';
 import searchIcon from '../icons/searchIcon.svg';
 import arrowIcon from '../icons/arrowIcon.png';
-import { fetchListings } from '../services/api'; 
+import { fetchUserListings } from '../services/api'; 
 import PreviewBox from './previewBox';
+import ListingCard from './ListingCard';
 
 function User() {
     const [listings, setListings] = useState([]);
@@ -14,8 +15,20 @@ function User() {
 
     useEffect(() => {
         const loadListings = async () => {
-            const listingsFromServer = await fetchListings();
-            setListings(listingsFromServer);
+            const email = localStorage.getItem('email');
+
+            if (!email) {
+                setListings([]);
+                return;
+            }
+
+            try {
+                const listingsFromServer = await fetchUserListings(email);
+                setListings(listingsFromServer);
+            } catch (error) {
+                console.error('Unable to load user listings', error);
+                setListings([]);
+            }
         };
         loadListings();
     }, []);
@@ -82,11 +95,20 @@ function User() {
                             <img src={searchIcon} className="search-icon" alt="Search Icon" />
                         </div>
                     </div>
-                    {listings.map(listing => (
-                            <div key={listing.id} className="listing-entry" onClick={() => handleListingClick(listing)}>
-                                <button>{listing.title}</button>
-                            </div>
+                    <div className="listing-grid">
+                        {listings.map(listing => (
+                            <ListingCard
+                                key={listing.id}
+                                listing={listing}
+                                onClick={handleListingClick}
+                            />
                         ))}
+                        {listings.length === 0 && (
+                            <div className="listing-empty-state">
+                                You have no listings yet.
+                            </div>
+                        )}
+                    </div>
                 </section>
                 
             </main>
@@ -104,7 +126,7 @@ function User() {
                 <div className="modal-overlay">
                     <div className="modal">
                         <span className="close-modal" onClick={handleCloseModal}>×</span>
-                        <PreviewBox listing={selectedListing} onRemoveMedia={() => setSelectedListing({...selectedListing, media: null})} />
+                        <PreviewBox listing={selectedListing} />
                     </div>
                 </div>
             )}

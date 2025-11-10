@@ -25,6 +25,7 @@ public class MediaData {
 
     private String name;
     private String type;
+    private Long listingId;
     @Lob
     @Column(name = "mediadata", length = 1000)
     private byte[] mediaData;

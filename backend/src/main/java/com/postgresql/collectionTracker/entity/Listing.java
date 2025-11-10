@@ -14,4 +14,5 @@ public class Listing {
     private String title;
     private double price;
     private String description;
+    private String ownerEmail;
 }

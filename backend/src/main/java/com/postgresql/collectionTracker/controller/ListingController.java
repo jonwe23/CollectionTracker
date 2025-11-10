@@ -6,7 +6,12 @@ import com.postgresql.collectionTracker.repository.ListingRepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
@@ -26,6 +31,11 @@ public class ListingController {
     @GetMapping("/listings")
     public List<Listing> getAllListings() {
         return repo.findAll();
+    }
+
+    @GetMapping("/listings/user/{email}")
+    public List<Listing> getListingsForUser(@PathVariable String email) {
+        return repo.findByOwnerEmail(email);
     }
 
 }

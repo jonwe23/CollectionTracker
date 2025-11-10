@@ -3,18 +3,17 @@ import './createListing.css';
 
 function CreateListing() {
     const [formState, setFormState] = useState({ id: null, title: '', price: '', description: '', media: null });
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const refs = {
-        photo: useRef(null),
-        previewContainer: useRef(null)
-    };
+    const photoInputRef = useRef(null);
+    const previewContainerRef = useRef(null);
 
     useEffect(() => {
         const updatePreviewSize = () => {
-            const { previewContainer } = refs;
+            if (!previewContainerRef.current) {
+                return;
+            }
             const aspectRatio = 16 / 12;
-            const width = previewContainer.current.offsetWidth;
-            previewContainer.current.style.height = `${width / aspectRatio}px`;
+            const width = previewContainerRef.current.offsetWidth;
+            previewContainerRef.current.style.height = `${width / aspectRatio}px`;
         };
 
         updatePreviewSize();
@@ -67,6 +66,13 @@ function CreateListing() {
             alert('Please provide a title, price, and description to create a listing.');
             return;
         }
+
+        const ownerEmail = localStorage.getItem('email');
+
+        if (!ownerEmail) {
+            alert('You need to be logged in to create a listing.');
+            return;
+        }
     
         try {
             const listingResponse = await fetch('http://localhost:8080/addListing', {
@@ -75,7 +81,8 @@ function CreateListing() {
                 body: JSON.stringify({
                     title: formState.title,
                     price: formState.price,
-                    description: formState.description
+                    description: formState.description,
+                    ownerEmail: ownerEmail
                 }),
             });
     
@@ -122,8 +129,8 @@ function CreateListing() {
                 <aside className="sidebar">
                     <h2>Item for Sale</h2>
                     <div className="buttons-container">
-                        <input type="file" ref={refs.photo} style={{ display: 'none' }} accept="image/*" onChange={handleMediaChange} />
-                        <button className="button-style" onClick={() => refs.photo.current.click()}>
+                        <input type="file" ref={photoInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleMediaChange} />
+                        <button className="button-style" onClick={() => photoInputRef.current?.click()}>
                             Add Photo
                         </button>
                     </div>
@@ -136,7 +143,7 @@ function CreateListing() {
                 <section id="background">
                     <div className="preview-box">
                         <h2>Preview</h2>
-                        <div className="preview-container" ref={refs.previewContainer}>
+                        <div className="preview-container" ref={previewContainerRef}>
                             <div className="media-preview" style={{ position: 'relative' }}>
                                 {formState.media && (
                                     <img src={formState.media.url} alt="Upload" className="media-item" />
