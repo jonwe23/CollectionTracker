@@ -153,7 +153,7 @@ function Home() {
                 </aside>
                 <section id="listings">
                     <div className="listings-header">
-                        <h2>Today's picks</h2>
+                        <h2>Today's listings</h2>
                     </div>
                     <div className="listing-grid">
                         {listings.map(listing => (
@@ -175,7 +175,10 @@ function Home() {
                 <div className="modal-overlay">
                     <div className="modal">
                         <span className="close-modal" onClick={handleCloseModal}>×</span>
-                        <PreviewBox listing={selectedListing} />
+                        <PreviewBox
+                            listing={selectedListing}
+                            mediaRefreshKey={`${selectedListing?.title ?? ''}|${selectedListing?.description ?? ''}|${selectedListing?.price ?? ''}`}
+                        />
                     </div>
                 </div>
             )}

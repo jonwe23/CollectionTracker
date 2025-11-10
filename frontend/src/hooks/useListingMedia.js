@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useListingMedia(listingId) {
+function useListingMedia(listingId, refreshKey = 0) {
     const [mediaUrl, setMediaUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -11,6 +11,7 @@ function useListingMedia(listingId) {
         const fetchMedia = async () => {
             if (!listingId) {
                 setMediaUrl(null);
+                setIsLoading(false);
                 return;
             }
 
@@ -50,7 +51,7 @@ function useListingMedia(listingId) {
                 URL.revokeObjectURL(objectUrl);
             }
         };
-    }, [listingId]);
+    }, [listingId, refreshKey]);
 
     return { mediaUrl, isLoading };
 }

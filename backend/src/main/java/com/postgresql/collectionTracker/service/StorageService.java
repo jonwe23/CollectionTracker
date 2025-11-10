@@ -54,4 +54,10 @@ public class StorageService {
                     return decompressed;
                 });
     }
+
+    @Transactional
+    public void deleteMediaByListingId(Long listingId) {
+        Long safeListingId = Objects.requireNonNull(listingId, "listingId must not be null");
+        repository.deleteByListingId(safeListingId);
+    }
 }

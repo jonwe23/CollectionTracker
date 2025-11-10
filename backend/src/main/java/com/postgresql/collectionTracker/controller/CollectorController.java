@@ -5,6 +5,8 @@ import com.postgresql.collectionTracker.repository.CollectorRepository;
 import com.postgresql.collectionTracker.login.LoginRequest;
 import com.postgresql.collectionTracker.login.LoginResponse;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +25,7 @@ public class CollectorController {
 
     @PostMapping("/addCollector")
     public Collector addCollector(@RequestBody Collector collector) {
-        return repo.save(collector);
+        return repo.save(Objects.requireNonNull(collector, "Collector must not be null"));
     }
 
     @RequestMapping("/login")

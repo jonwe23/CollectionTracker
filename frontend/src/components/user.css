@@ -299,6 +299,115 @@ body, h1, h2 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+.listing-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.listing-action-button {
+  background-color: #1877f2;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.listing-action-button:hover:not(:disabled) {
+  background-color: #145db8;
+}
+
+.listing-action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.listing-action-button.danger {
+  background-color: #e41e3f;
+}
+
+.listing-action-button.danger:hover {
+  background-color: #b51731;
+}
+
+.listing-action-button.secondary {
+  background-color: #e4e6eb;
+  color: #050505;
+}
+
+.listing-action-button.secondary:hover {
+  background-color: #d8dadf;
+}
+
+.listing-action-button.primary {
+  background-color: #1877f2;
+}
+
+.edit-listing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.edit-listing-form input,
+.edit-listing-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccd0d5;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.edit-listing-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.edit-listing-media-preview {
+  background-color: #f0f2f5;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.edit-listing-media-preview img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.edit-listing-remove-media {
+  background: none;
+  border: none;
+  color: #1877f2;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  text-align: left;
+}
+
+.edit-listing-remove-media:hover {
+  text-decoration: underline;
+}
+
+.edit-listing-note {
+  font-size: 12px;
+  color: #65676b;
+}
+
+.edit-listing-form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
 
 @media only screen and (max-width: 1300px) {
   .sidebar2-section {

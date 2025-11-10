@@ -20,7 +20,8 @@ const formatPrice = (price) => {
 };
 
 const ListingCard = ({ listing, onClick }) => {
-    const { mediaUrl, isLoading } = useListingMedia(listing?.id);
+    const mediaRefreshKey = `${listing?.title ?? ''}|${listing?.description ?? ''}|${listing?.price ?? ''}`;
+    const { mediaUrl, isLoading } = useListingMedia(listing?.id, mediaRefreshKey);
 
     const handleClick = () => {
         if (typeof onClick === 'function') {
